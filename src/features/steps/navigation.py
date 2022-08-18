@@ -5,7 +5,7 @@ from selenium.webdriver.support.expected_conditions import title_contains, title
 from selenium.webdriver.support.wait import WebDriverWait
 
 
-@step("Navigate to '{page}'")
+@step("I navigate to '{page}'")
 def test(context, page):
     context.driver = webdriver.Chrome(executable_path="/Users/jenny/bin/webdriver/chromedriver")
     if page == "google":

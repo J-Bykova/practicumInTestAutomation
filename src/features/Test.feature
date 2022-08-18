@@ -1,18 +1,12 @@
-#Feature: Hello world
-#
-#  Scenario: Test
-#    Given Navigate to Google
+Feature: Regression test for eBay.com
 
-Feature:   Regression test for eBay.com
-
-  Scenario: User could add item to the cart
-    Given Navigate to 'ebay'
-    When search for the item -> scott bike
-    And click the search button
-    Then click first available item from result list
-    And click "Add to the cart"
-    And In pop-up window click "go to the cart"
-    Then verify test
+  Scenario: User could filter results
+    Given I navigate to 'ebay'
+    When I search for 'scott bike'
+    And For 'Bike Type' I set 'Gravel Bike'
+    And For 'Material' I set 'Carbon Fiber'
+    And For 'Color' I set 'Green'
+    Then I verify page result should contains 'scott bike'
 
 
 
