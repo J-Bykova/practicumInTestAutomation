@@ -1,14 +1,37 @@
-import time
+import warnings
 
 from behave import step
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.expected_conditions import title_contains, title_is
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.expected_conditions import title_is
 from selenium.webdriver.support.wait import WebDriverWait
 
 
-@step("I validate that all results are related to '{filter_one}' and '{filter_two}'")
-def step_impl(context, filter_one, filter_two):
+@step("I verify product description")
+def step_impl(context):
+    # TODO
+    warnings.warn(f"I print text block: \n{context.text}\n")
+
+
+@step("I click on first item")
+def step_impl(context):
+    if len(context.driver.window_handles) != 1:
+        raise Exception("There is more then one windows open")
+
+    original_window = context.driver.current_window_handle
+    product_title = context.driver.find_element(
+        by=By.XPATH,
+        value="(//*[contains(@class,'srp-results')]//h3[@class='s-item__title'])[1]"
+    )
+
+    product_title.click()
+    WebDriverWait(context.driver, timeout=10).until(expected_conditions.number_of_windows_to_be(2))
+
+    for window_handle in context.driver.window_handles:
+        if window_handle != original_window:
+            context.driver.switch_to.window(window_handle)
+            break
 
 
 @step("I verify title of product on page result it should contains '{expected}'")
@@ -82,6 +105,7 @@ def step_impl(context, link):
         value=f"//header//a[contains(text(), '{link}')]"
     )
     item.click()
+    WebDriverWait(context.driver, timeout=3).until(title_is("Security Measure"))
 
 
 @step("I navigate to '{page}'")

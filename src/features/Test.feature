@@ -4,19 +4,6 @@ Feature: Regression test for eBay.com
   Background:
     Given I navigate to 'ebay'
 
-
-  @example5
-  Scenario: Verify information about Captcha
-    When I click 'Sign in' in top navigation menu
-    And I click on 'I am human' checkbox
-    And I open menu of captcha and click on 'information' button
-    Then I validate the 'information' popup
-    """
-    hCaptcha is a service that reduces bots and spam by asking simple questions.
-    Please follow the instructions at the top of the screen for each challenge.
-    For more information visit
-    """
-
   @example4
   Scenario: Verify the product’s multiple filters on the result page
     When I search for 'scott bike'
@@ -24,8 +11,11 @@ Feature: Regression test for eBay.com
       | filter    | value       |
       | Bike Type | Gravel Bike |
       | Condition | Used        |
-    Then I validate that all results are related to 'Gravel Bike' and 'Pre-Owned'
-
+    And I click on first item
+    Then I verify product description
+      """
+      Gravel Bike Used
+      """
 
   @example3
   Scenario Outline:  Verify the product’s one filter on the result page
@@ -37,7 +27,6 @@ Feature: Regression test for eBay.com
       | Bike Type | Gravel Bike  |
       | Color     | Green        |
       | Material  | Carbon Fiber |
-
 
   @example2
   Scenario Outline: Verify sub-category navigation leads to right pages
